@@ -1,3 +1,6 @@
+
+
+
 <header class="navbar">
       <div class="container navbar-content">
         <a href="/" class="logo-wrapper">
@@ -104,4 +107,4 @@
           </a>
         </div>
       </div>
-  </header>
+</header>

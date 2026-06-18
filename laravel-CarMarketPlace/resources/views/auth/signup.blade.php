@@ -1,21 +1,10 @@
-@extends('layouts.app', ['cssClass' => 'page-signup'])
 
-@section('title', 'Signup')
 
-@section('childContent')
+<x-guest-layout title="Signup" bodyClass="page-signup">
 
-<main>
-      <div class="container-small page-login">
-        <div class="flex" style="gap: 5rem">
-          <div class="auth-page-form">
-            <div class="text-center">
-              <a href="/">
-                <img src="/img/drive_mart-logo.png" alt="" style="max-width: 250px; margin: 0 auto;" />
-              </a>
-            </div>
-            <h1 class="auth-page-title">Signup</h1>
+  <h1 class="auth-page-title">Signup</h1>
 
-            <form action="" method="post">
+  <form action="" method="post">
               <div class="form-group">
                 <input type="email" placeholder="Your Email" />
               </div>
@@ -36,32 +25,12 @@
                 <input type="text" placeholder="Phone" />
               </div>
               <button class="btn btn-primary btn-login w-full">Register</button>
+  </form>
+  
 
-              <div class="grid grid-cols-2 gap-1 social-auth-buttons">
-                <button
-                  class="btn btn-default flex justify-center items-center gap-1"
-                >
-                  <img src="/img/google.png" alt="" style="width: 20px" />
-                  Google
-                </button>
-                <button
-                  class="btn btn-default flex justify-center items-center gap-1"
-                >
-                  <img src="/img/facebook.png" alt="" style="width: 20px" />
-                  Facebook
-                </button>
-              </div>
-              <div class="login-text-dont-have-account">
-                Already have an account? -
-                <a href="/login.html"> Click here to login </a>
-              </div>
-            </form>
-          </div>
-          <div class="auth-page-image">
-            <img src="/img/car-png-39071.png" alt="" class="img-responsive" style="width: 100%; min-width: 500px;" />
-          </div>
-        </div>
-      </div>
-</main>
+  <x-slot:footerLink>
+    Already have an account? -
+    <a href="/login.html"> Click here to login </a>
+  </x-slot:footerLink>
 
-@endsection
+</x-guest-layout>
