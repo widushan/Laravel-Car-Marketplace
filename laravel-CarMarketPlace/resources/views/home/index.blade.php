@@ -4,6 +4,13 @@
 
 @section('content')
 
+<x-card>
+  <x-slot name="title">Card Title</x-slot>
+  Card Content 1
+  <x-slot name="footer">Card Footer</x-slot>
+</x-card>
+
+
     <!-- Home Slider -->
     <section class="hero-slider">
       <!-- Carousel wrapper -->
@@ -1012,4 +1019,11 @@
     </main>
 
 
+@endsection
+
+
+@section('footerLinks')
+  @parent
+  <a href="#">Link 3</a>
+  <a href="#">Link 4</a>
 @endsection
