@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->string(column: 'phone', length: 45);
             $table->longText(column: 'description')->nullable();
             $table->timestamps();
-            $table->timestamp('deleted_at');
+            $table->softDeletes();
         });
     }
 
