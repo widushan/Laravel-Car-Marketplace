@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->string(column: 'address', length: 255);
             $table->string(column: 'phone', length: 45);
             $table->longText(column: 'description')->nullable();
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
