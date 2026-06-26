@@ -36,7 +36,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        return view('car.show');
+        return view('car.show', ['car' => $car]);
     }
 
     /**
@@ -70,7 +70,8 @@ class CarController extends Controller
 
         $carCount = $query->count();
 
-        $cars = $query->limit(30)->get();
+        $cars = $query->with(['primaryImage', 'city', 'carType', 'fuelType', 'maker', 'model'])
+            ->limit(30)->get();
 
         return view('car.search', ['cars' => $cars, 'carCount' => $carCount]);
     }

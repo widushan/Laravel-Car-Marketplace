@@ -2,28 +2,25 @@
     
     <main>
       <div class="container">
-        <h1 class="car-details-page-title">Lexus NX200t - 2016</h1>
-        <div class="car-details-region">New Jersey - 2 days ago</div>
+        <h1 class="car-details-page-title">{{ $car->maker->name }} {{ $car->model->name }} - {{ $car->year }}</h1>
+        <div class="car-details-region">{{ $car->city->name }} - {{ $car->published_at }}</div>
 
         <div class="car-details-content">
           <div class="car-images-and-description">
             <div class="car-images-carousel">
               <div class="car-image-wrapper">
                 <img
-                  src="/img/cars/Lexus-RX200t-2016/1.jpeg"
+                  src="{{ $car->primaryImage->image_path }}"
                   alt=""
                   class="car-active-image"
                   id="activeImage"
                 />
               </div>
               <div class="car-image-thumbnails">
-                <img src="/img/cars/Lexus-RX200t-2016/1.jpeg" alt="" />
-                <img src="/img/cars/Lexus-RX200t-2016/2.jpeg" alt="" />
-                <img src="/img/cars/Lexus-RX200t-2016/3.jpeg" alt="" />
-                <img src="/img/cars/Lexus-RX200t-2016/4.jpeg" alt="" />
-                <img src="/img/cars/Lexus-RX200t-2016/5.jpeg" alt="" />
-                <img src="/img/cars/Lexus-RX200t-2016/6.jpeg" alt="" />
-                <img src="/img/cars/Lexus-RX200t-2016/7.jpeg" alt="" />
+                @foreach ($car->images as $image)
+                <img src="{{ $image->image_path }}" alt="" />
+                @endforeach
+                
               </div>
               <button class="carousel-button prev-button" id="prevButton">
                 <svg
@@ -61,27 +58,7 @@
 
             <div class="card car-detailed-description">
               <h2 class="car-details-title">Detailed Description</h2>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Mollitia delectus, vitae blanditiis praesentium doloremque
-                corporis aliquam eligendi dolorum cum ad, laudantium aut
-                reprehenderit iste, ratione vero amet at dolor. Non. Lorem ipsum
-                dolor sit amet consectetur adipisicing elit. Fugiat, labore
-                nesciunt tenetur excepturi corrupti molestiae odio. Asperiores
-                eligendi repellat aliquam nulla neque delectus in, harum
-                exercitationem quae facere, illum obcaecati.
-              </p>
-              <p>
-                Step inside the luxurious cabin, where comfort meets
-                sophistication. The Silverstream X-200 envelops you in plush
-                leather seats with ergonomic design, ensuring every journey is a
-                retreat of indulgence. Equipped with state-of-the-art
-                infotainment and navigation systems, along with advanced
-                driver-assist features, this car offers a seamless blend of
-                convenience and safety. Whether cruising through city streets or
-                embarking on a cross-country adventure, the Silverstream X-200
-                promises an exhilarating driving experience like no other.
-              </p>
+                {!! $car->description !!}
             </div>
 
             <div class="card car-detailed-description">
@@ -278,7 +255,7 @@
           </div>
           <div class="car-details card">
             <div class="flex items-center justify-between">
-              <p class="car-details-price">$25,000</p>
+              <p class="car-details-price">Rs. {{ $car->price }}</p>
               <button class="btn-heart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -302,23 +279,23 @@
               <tbody>
                 <tr>
                   <th>Maker</th>
-                  <td>Lexus</td>
+                  <td>{{ $car->maker->name }}</td>
                 </tr>
                 <tr>
                   <th>Model</th>
-                  <td>NX200t</td>
+                  <td>{{ $car->model->name }}</td>
                 </tr>
                 <tr>
                   <th>Year</th>
-                  <td>2016</td>
+                  <td>{{ $car->year }}</td>
                 </tr>
                 <tr>
                   <th>Car Type</th>
-                  <td>SUV</td>
+                  <td>{{ $car->carType->name }}</td>
                 </tr>
                 <tr>
                   <th>Fuel Type</th>
-                  <td>Hybrid</td>
+                  <td>{{ $car->fuelType->name }}</td>
                 </tr>
               </tbody>
             </table>
@@ -331,11 +308,11 @@
                 class="car-details-owner-image"
               />
               <div>
-                <h3 class="car-details-owner">John Smith</h3>
-                <div class="text-muted">5 cars</div>
+                <h3 class="car-details-owner">{{ $car->owner->name }}</h3>
+                <div class="text-muted">{{ $car->owner->cars()->count() }} cars</div>
               </div>
             </div>
-            <a href="tel:+995557123***" class="car-details-phone">
+            <a href="tel:{{ Str::mask($car->phone, '*', -3) }}" class="car-details-phone">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -351,7 +328,7 @@
                 />
               </svg>
 
-              +995557123***
+              {{ Str::mask($car->phone, '*', -3) }}
               <span class="car-details-phone-view">view full number</span>
             </a>
           </div>
