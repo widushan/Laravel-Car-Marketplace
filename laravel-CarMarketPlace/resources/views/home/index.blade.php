@@ -20,7 +20,11 @@
                   Type, etc...
                 </p>
 
-                <button class="btn btn-hero-slider">Find the car</button>
+                <a href="{{ route('car.search') }}">
+                  <button class="btn btn-hero-slider">
+                    Find the car
+                  </button>
+                </a>
               </div>
             </div>
             <div class="slide-image">
