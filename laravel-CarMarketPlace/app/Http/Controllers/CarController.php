@@ -75,12 +75,11 @@ class CarController extends Controller
             ->with(['primaryImage', 'city', 'carType', 'fuelType', 'maker', 'model'])
             ->orderBy('published_at', 'desc');
 
-        $carCount = $query->count();
+        $cars = $query->paginate(5);
 
-        $cars = $query
-            ->limit(30)->get();
 
-        return view('car.search', ['cars' => $cars, 'carCount' => $carCount]);
+
+        return view('car.search', ['cars' => $cars]);
     }
 
 
@@ -90,7 +89,7 @@ class CarController extends Controller
         $cars = User::find(5)
             ->favouriteCars()
             ->with(['primaryImage', 'city', 'carType', 'fuelType', 'maker', 'model'])
-            ->get();
+            ->paginate(10);
 
         return view('car.watchlist', ['cars' => $cars]);
     }
