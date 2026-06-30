@@ -17,7 +17,17 @@ foreach ($tmpDirs as $dir) {
     }
 }
 
-// Override storage and bootstrap cache paths before Laravel boots
+// Write the Aiven MySQL CA certificate to /tmp so PDO can use it
+$caCertContent = getenv('MYSQL_SSL_CA_CERT');
+if ($caCertContent) {
+    $caCertPath = '/tmp/ca.pem';
+    file_put_contents($caCertPath, $caCertContent);
+    $_ENV['MYSQL_ATTR_SSL_CA'] = $caCertPath;
+    $_SERVER['MYSQL_ATTR_SSL_CA'] = $caCertPath;
+    putenv("MYSQL_ATTR_SSL_CA=$caCertPath");
+}
+
+// Override storage path before Laravel boots
 $_ENV['APP_STORAGE_PATH'] = '/tmp/storage';
 $_SERVER['APP_STORAGE_PATH'] = '/tmp/storage';
 
