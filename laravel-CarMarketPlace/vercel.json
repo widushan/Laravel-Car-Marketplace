@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "outputDirectory": "public",
+  "builds": [
+    { "src": "public/**", "use": "@vercel/static" },
+    { "src": "api/**/*.php", "use": "@vercel/php" }
+  ]
+}
