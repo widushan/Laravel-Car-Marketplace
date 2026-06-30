@@ -14,7 +14,9 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->report(function (\Throwable $e) {
+            file_put_contents('php://stderr', "ORIGINAL EXCEPTION: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n");
+        });
     })->create();
 
 // On Vercel, redirect storage paths to /tmp (writable filesystem)
