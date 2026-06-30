@@ -55,15 +55,30 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!fileInput) {
       return;
     }
+    
+    let dt = new DataTransfer();
+
     fileInput.onchange = (ev) => {
-      imagePreview.innerHTML = "";
       const files = ev.target.files;
       for (let file of files) {
+        dt.items.add(file);
+      }
+      
+      // Update file input files
+      fileInput.files = dt.files;
+      
+      // Render all previews
+      renderPreviews();
+    };
+
+    const renderPreviews = () => {
+      imagePreview.innerHTML = "";
+      Array.from(fileInput.files).forEach((file, index) => {
         readFile(file).then((url) => {
-          const img = createImage(url);
+          const img = createImage(url, index);
           imagePreview.append(img);
         });
-      }
+      });
     };
 
     function readFile(file) {
@@ -79,12 +94,32 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    function createImage(url) {
-      const a = document.createElement("a");
+    function createImage(url, index) {
+      const a = document.createElement("div");
       a.classList.add("car-form-image-preview");
+      a.style.position = "relative";
       a.innerHTML = `
         <img src="${url}" />
+        <button type="button" class="btn-delete-image" data-index="${index}" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: background 0.2s;">&times;</button>
       `;
+      
+      a.querySelector(".btn-delete-image").onclick = (e) => {
+        e.preventDefault();
+        const deleteIndex = parseInt(e.target.dataset.index);
+        
+        // Rebuild DataTransfer excluding the deleted item
+        const newDt = new DataTransfer();
+        const currentFiles = fileInput.files;
+        for (let i = 0; i < currentFiles.length; i++) {
+          if (i !== deleteIndex) {
+            newDt.items.add(currentFiles[i]);
+          }
+        }
+        dt = newDt;
+        fileInput.files = dt.files;
+        renderPreviews();
+      };
+      
       return a;
     }
   };
@@ -219,7 +254,67 @@ document.addEventListener("DOMContentLoaded", function () {
   initMobileFilters();
   initCascadingDropdown('#makerSelect', '#modelSelect');
   initCascadingDropdown('#stateSelect', '#citySelect');
-  initSortingDropdown()
+  initSortingDropdown();
+
+  const initResetButton = () => {
+    const resetBtn = document.querySelector('.btn-find-a-car-reset');
+    if (!resetBtn) return;
+
+    resetBtn.addEventListener('click', () => {
+      // Find the parent form
+      const form = resetBtn.closest('form');
+      if (!form) return;
+
+      // Reset all text/number inputs
+      form.querySelectorAll('input').forEach(input => {
+        input.value = '';
+      });
+
+      // Reset all selects to their first (empty) option
+      form.querySelectorAll('select').forEach(select => {
+        select.value = '';
+        // Trigger change so cascading dropdowns react (hide children)
+        select.dispatchEvent(new Event('change'));
+      });
+
+      // If we're on the search results page, navigate to clean URL to clear server-side filters
+      const url = new URL(window.location.href);
+      if (url.pathname.includes('/car/search') || url.search.length > 0) {
+        window.location.href = url.pathname;
+      }
+    });
+  };
+
+  initResetButton();
+
+  const initWatchlist = () => {
+    const watchListButtons = document.querySelectorAll('.btn-add-to-watchlist');
+    watchListButtons.forEach(btn => {
+      btn.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        const carId = btn.dataset.id;
+        fetch(`/car/${carId}/watchlist`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        }).then(res => {
+          if (res.status === 401) {
+            window.location.href = '/login';
+            return;
+          }
+          if (res.ok) {
+            // Toggle the heart icons
+            const svgs = btn.querySelectorAll('svg');
+            svgs.forEach(svg => svg.classList.toggle('hidden'));
+          }
+        })
+      });
+    });
+  }
+
+  initWatchlist();
 
   ScrollReveal().reveal(".hero-slide.active .hero-slider-title", {
     delay: 200,

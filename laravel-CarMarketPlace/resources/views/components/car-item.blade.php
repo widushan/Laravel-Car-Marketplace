@@ -1,11 +1,15 @@
-@props(['car', 'isInWatchlist' => false])
+@props(['car'])
+
+@php
+    $isInWatchlist = auth()->check() ? auth()->user()->favouriteCars->contains($car->id) : false;
+@endphp
 
 
 
 <div class="car-item card">
               <a href="{{ route('car.show', $car) }}">
                 <img
-                  src="{{ $car->primaryImage->image_path }}"
+                  src="{{ $car->primaryImage?->image_path }}"
                   alt=""
                   class="car-item-img rounded-t"
                 />
@@ -13,7 +17,7 @@
               <div class="p-medium">
                 <div class="flex items-center justify-between">
                   <small class="m-0 text-muted">{{ $car->city->name }}</small>
-                  <button class="btn-heart text-primary">
+                  <button class="btn-heart text-primary btn-add-to-watchlist" data-id="{{ $car->id }}">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

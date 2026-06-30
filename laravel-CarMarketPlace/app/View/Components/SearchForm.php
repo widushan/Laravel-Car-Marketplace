@@ -21,7 +21,14 @@ class SearchForm extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.search-form');
+        return view('components.search-form', [
+            'makers' => \App\Models\Maker::orderBy('name')->get(),
+            'models' => \App\Models\Model::orderBy('name')->get(),
+            'states' => \App\Models\State::orderBy('name')->get(),
+            'cities' => \App\Models\City::orderBy('name')->get(),
+            'carTypes' => \App\Models\CarType::orderBy('name')->get(),
+            'fuelTypes' => \App\Models\FuelType::orderBy('name')->get(),
+        ]);
     }
 
 

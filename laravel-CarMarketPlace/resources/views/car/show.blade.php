@@ -10,7 +10,7 @@
             <div class="car-images-carousel">
               <div class="car-image-wrapper">
                 <img
-                  src="{{ $car->primaryImage->image_path }}"
+                  src="{{ $car->primaryImage?->image_path }}"
                   alt=""
                   class="car-active-image"
                   id="activeImage"
@@ -65,40 +65,40 @@
               <h2 class="car-details-title">Car Specifications</h2>
 
               <ul class="car-specifications">
-                <x-car-specification :value="$car->features->air_conditioning">
+                <x-car-specification :value="$car->features?->air_conditioning">
                   Air Conditioning
                 </x-car-specification>
-                <x-car-specification :value="$car->features->power_windows">
+                <x-car-specification :value="$car->features?->power_windows">
                   Power Windows
                 </x-car-specification>
-                <x-car-specification :value="$car->features->power_door_locks">
+                <x-car-specification :value="$car->features?->power_door_locks">
                   Power Door Locks
                 </x-car-specification>
-                <x-car-specification :value="$car->features->abs">
+                <x-car-specification :value="$car->features?->abs">
                   ABS
                 </x-car-specification>
-                <x-car-specification :value="$car->features->cruise_control">
+                <x-car-specification :value="$car->features?->cruise_control">
                   Cruise Control
                 </x-car-specification>
-                <x-car-specification :value="$car->features->bluetooth_connectivity">
+                <x-car-specification :value="$car->features?->bluetooth_connectivity">
                   Bluetooth Connectivity
                 </x-car-specification>
-                <x-car-specification :value="$car->features->remote_start">
+                <x-car-specification :value="$car->features?->remote_start">
                   Remote Start
                 </x-car-specification>
-                <x-car-specification :value="$car->features->gps_navigation">
+                <x-car-specification :value="$car->features?->gps_navigation">
                   GPS Navigation System
                 </x-car-specification>
-                <x-car-specification :value="$car->features->heated_seats">
+                <x-car-specification :value="$car->features?->heated_seats">
                   Heated Seats
                 </x-car-specification>
-                <x-car-specification :value="$car->features->climate_control">
+                <x-car-specification :value="$car->features?->climate_control">
                   Climate Control
                 </x-car-specification>
-                <x-car-specification :value="$car->features->rear_parking_sensors">
+                <x-car-specification :value="$car->features?->rear_parking_sensors">
                   Rear Parking Sensors
                 </x-car-specification>
-                <x-car-specification :value="$car->features->leather_seats">
+                <x-car-specification :value="$car->features?->leather_seats">
                   Leather Seats
                 </x-car-specification>
               </ul>

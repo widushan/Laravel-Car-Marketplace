@@ -149,32 +149,6 @@ class DatabaseSeeder extends Seeder
         }
 
 
-        // Create users, cars with images and features
-        // Create 3 users first, then create 2 more users,
-        // and for each user (from the last 2 users) create 50 cars,
-        // with images and features and add these cars to favourite cars
-        // of these 2 users.
 
-        // Create 3 users
-        User::factory()
-            ->count(3)
-            ->create();
-
-        User::factory()
-            ->count(2)
-            ->has(
-                Car::factory()
-                    ->count(50)
-                    ->has(
-                        CarImage::factory()
-                            ->count(5)
-                            ->sequence(fn(Sequence $sequence) =>
-                                ['position' => $sequence->index % 5 + 1]),
-                        'images'
-                    )
-                    ->hasFeatures(),
-                'favouriteCars'
-            )
-            ->create();
     }
 }
