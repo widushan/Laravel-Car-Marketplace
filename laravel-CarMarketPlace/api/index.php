@@ -31,5 +31,17 @@ if ($caCertContent) {
 $_ENV['APP_STORAGE_PATH'] = '/tmp/storage';
 $_SERVER['APP_STORAGE_PATH'] = '/tmp/storage';
 
-// Forward all Vercel requests to Laravel's public/index.php
-require __DIR__ . '/../public/index.php';
+// TEMPORARY: Catch and display the REAL error
+try {
+    require __DIR__ . '/../public/index.php';
+} catch (\Throwable $e) {
+    http_response_code(500);
+    header('Content-Type: application/json');
+    echo json_encode([
+        'error' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'trace' => array_slice(explode("\n", $e->getTraceAsString()), 0, 15),
+    ], JSON_PRETTY_PRINT);
+    exit(1);
+}
